@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub search</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://unpkg.com/vue@3"></script> 
+</head>
+
+<body>
+    <div id="app">
+        <!-- Favorites -->
+        <div class="favorites">
+        </div>
+
+        <!-- Content -->
+        <article class="content">
+            <h1 class="content__title">Buscar usuarios de GitHub</h1>
+           
+
+            <!-- Search -->
+            <form class="search" v-on:submit.prevent="Buscar"> <!-- v-on es una directiva de vue, el submit el botton y le decimso Buscar de la funcion que creamos, el .prevent e sun modificador de vue que previene que se ejecute cualquier reaccion q deberia ocurrir normalmente -->
+                <input type="text" v-model="busqueda" class="search__input" required placeholder="Escriba un nombre de usuario"> <!-- ingresamos un v-model donde ponemos el busqueda del main de Vue.createApp-->
+                <input type="submit" class="search__submit" value="Buscar">
+            </form>
+
+            <!-- Result -->
+            <div class="result" v-if="resultado">
+                <h2 class="result__name">{{resultado.name}}</h2><!-- llamamos el objeto resultado y la propiedad name -->
+            
+                <img v-bind:src="resultado.avatar_url" class="result__avatar" alt=""> <!-- usamos la directiva v-nlind:y llamamos la url -->
+                <p class="result__bio">{{resultado.bio}} {{resultado.location}}<!-- llamamos al objeto resultado con la propiedad bio y al del location -->
+                  
+                    <br>
+                    <a :href="resultado.html_url" class="result__blog" target="blank">Perfil del usuario</a> <!-- buscmos la propiedad html_url del resultado, y en el target blank le decimos que q lo abra en una pestaña nueva -->
+                </p>
+            </div>
+            <p v-else>Esperando por la búsqueda</p>
+            <!-- Error -->
+            <div v-show="fail" class="result__error">{{fail}}</div><!-- nos arroja el error del fail q pusimos en main -->
+        </article>
+    </div>
+    <script src="js/main.js">
+        
+    </script>
+    <!-- Experimento para ver la reactividad  -->
+    <script>
+        const AppMontada = ella.mount('#app')  /*aqui mandamos el app del html */
+    </script>
+    
+</body>
+
+</html>
