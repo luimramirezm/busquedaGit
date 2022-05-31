@@ -110,6 +110,7 @@ body {
 
 .favorite {
   transition: transform 0.3s ease-out;
+  
 }
 
 .favorite__avatar {
