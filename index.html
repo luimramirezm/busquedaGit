@@ -13,12 +13,16 @@
 <body>
     <div id="app">
         <!-- Favorites -->
+        
         <div class="favorites">
-            <div class="favorite" v-for="alias in TodosFavoritos">
-                <a href="">
-                <img v-bind:src="alias.avatar_url" :alt="alias.login" class="favorite__avatar">
-                </a>
-            </div>
+            <transition-group name="list">
+                <div class="favorite" v-for="alias in TodosFavoritos" :key="alias.id">
+                    <a  @click.prevent="MostrarFavorito(alias)" href="">  <!-- Le mandamos el alias de todos favoritos para q vea los valores -->
+                    <img v-bind:src="alias.avatar_url" :alt="alias.login" class="favorite__avatar">
+                    </a>
+                </div>
+            </transition-group>
+            
         </div>
 
         <!-- Content -->
@@ -33,24 +37,27 @@
             </form>
 
             <!-- Result -->
-            <div class="result" v-if="resultado">
-                <br><!-- @ = v-on:click --> 
-                 <!-- con el v-if si favoritos, tiene un id que lo elimine -->
+            <Transition>
 
-               <!-- <a v-if="favoritos.has(resultado.id) "href="http://" class ="result__toggle-favorite" @click.prevent="RemoverFavorito"> <img src="Eliminar.png" width="30" height="30"> Remover favorito </a>-->
-              
-                <a v-if="esFavorito" href="" class ="result__toggle-favorite" @click.prevent="RemoverFavorito"> <img src="Eliminar.png" width="30" height="30"> Remover favorito </a>
+                <div class="result" v-if="resultado">
+                    <br><!-- @ = v-on:click --> 
+                    <!-- con el v-if si favoritos, tiene un id que lo elimine -->
 
-                <a v-else href="http://" class ="result__toggle-favorite" @click.prevent="addFavorito"><img src="favoritos.png" width="30" height="30"> Añadir a favoritos </a>
-                <h2 class="result__name">{{resultado.name}}</h2><!-- llamamos el objeto resultado y la propiedad name -->
-            
-                <img v-bind:src="resultado.avatar_url" class="result__avatar" alt=""> <!-- usamos la directiva v-nlind:y llamamos la url -->
-                <p class="result__bio">{{resultado.bio}} {{resultado.location}}<!-- llamamos al objeto resultado con la propiedad bio y al del location -->
-                  
-                    <br>
-                    <a :href="resultado.html_url" class="result__blog" target="blank">Perfil del usuario</a> <!-- buscmos la propiedad html_url del resultado, y en el target blank le decimos que q lo abra en una pestaña nueva -->
-                </p>
-            </div>
+                <!-- <a v-if="favoritos.has(resultado.id) "href="http://" class ="result__toggle-favorite" @click.prevent="RemoverFavorito"> <img src="Eliminar.png" width="30" height="30"> Remover favorito </a>-->
+                
+                    <a v-if="esFavorito" href="" class ="result__toggle-favorite" @click.prevent="RemoverFavorito"> <img src="Eliminar.png" width="30" height="30"> Remover favorito </a>
+
+                    <a v-else href="http://" class ="result__toggle-favorite" @click.prevent="addFavorito"><img src="favoritos.png" width="30" height="30"> Añadir a favoritos </a>
+                    <h2 class="result__name">{{resultado.name}}</h2><!-- llamamos el objeto resultado y la propiedad name -->
+                
+                    <img v-bind:src="resultado.avatar_url" class="result__avatar" alt=""> <!-- usamos la directiva v-nlind:y llamamos la url -->
+                    <p class="result__bio">{{resultado.bio}} {{resultado.location}}<!-- llamamos al objeto resultado con la propiedad bio y al del location -->
+                    
+                        <br>
+                        <a :href="resultado.html_url" class="result__blog" target="blank">Perfil del usuario</a> <!-- buscmos la propiedad html_url del resultado, y en el target blank le decimos que q lo abra en una pestaña nueva -->
+                    </p>
+                </div>
+            </transition>
             <p v-else>Esperando por la búsqueda</p>
             <!-- Error -->
             <div v-show="fail" class="result__error">{{fail}}</div><!-- nos arroja el error del fail q pusimos en main -->

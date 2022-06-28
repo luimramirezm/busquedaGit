@@ -11,6 +11,23 @@ const ella = Vue.createApp({
             favoritos: new Map() //Donde guardamos los favoritos haremos un mapa
         }
      },
+     //Para acceder a la info del localStorage sin consumir mucha memoria con el mount al dom. 
+     created(){
+        const FavoritosGuardados = JSON.parse(window.localStorage.getItem("favoritos")) //Con getItem obtengo la informacion del local Storage con el JSON.parse lo volvimos a convertir en formato JSON
+        //console.log(FavoritosGuardados)
+
+        //SE deberia haber añadido favoritos en algun punto
+        if(FavoritosGuardados?.length){//Evalúo si hay algo adentro
+            const favoritosRebuild = new Map( //el Map se compondrá de una key y un value
+
+                //con este mapeo lograremos obtener el key que será el id de FvoritosGuardados y el value que será todo lo que está en ese array JSON
+                FavoritosGuardados.map(alias =>[alias.id,alias]))
+                //Con un alias o función obtenemos el id y el resto de información. En este caso alias, representa todo lo q está dentro del array Json Favoritos guardados
+              // Se creó la lista q se guarda en el mapeo
+                this.favoritos = favoritosRebuild //Aqui añado a favoritos todo lo nuevo del JSON
+                console.log(this.favoritos) //Para verlo en consola
+        }
+     },
 
      computed:{
          //Es para poder eliminar en el apartado de eliminar del html
@@ -62,7 +79,11 @@ const ella = Vue.createApp({
             //Se pretende guardar en caché la información de los favoritos de manera persistente
             //JSON.stringify convierte todo lo q hay en el TodosFavoritos, en una cadena de texto y toca convertirlo asi porq el localStorage solo lee String
             window.localStorage.setItem('favoritos', JSON.stringify(this.TodosFavoritos));
-        }
+        },
+
+        MostrarFavorito(parametro){
+            this.resultado = parametro //cuando pase el parametro ese resultado va a tener ese parametro , en resultado tenemos todo lo de la busqueda para asi q luego lo busque y aparesca el widget con la info del usuario
+        },
      }
 
   })
